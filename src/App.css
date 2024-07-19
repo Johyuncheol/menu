@@ -21,6 +21,15 @@
   font-size: 16px;
 }
 
+.main{
+  display: flex;
+}
+
+.form{
+  display: flex;
+  gap:20px
+
+}
 /* 초기화 css */
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
