@@ -4,6 +4,7 @@
   height: auto;
   min-height: 100vh;
   padding: 5px;
+  position:absolute;
 }
 
 .menuLable {
@@ -22,7 +23,7 @@
 }
 
 .main{
-  display: flex;
+  margin-left: 170px;
 }
 
 .form{
