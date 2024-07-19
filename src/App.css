@@ -1,12 +1,14 @@
 .sidebar {
-  width: 30%;
-  background-color: #4b646f;
+  width: 160px;
+  background-color: #222d32;
   height: auto;
   min-height: 100vh;
-  padding:3%;
-  max-width: 150px;
+  padding:5px;
 }
 
+.root{
+  font-size: 16px;
+}
 
 
 /* 초기화 css */

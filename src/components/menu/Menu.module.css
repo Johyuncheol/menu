@@ -1,0 +1,21 @@
+.EndEnd {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.MenuUl {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.MenuUl li {
+  color: #b8c7ce;
+
+  font-size: 0.9rem;
+
+  &:hover {
+    color: white;
+  }
+}
