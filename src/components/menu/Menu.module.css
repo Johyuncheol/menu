@@ -7,15 +7,20 @@
 .MenuUl {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .MenuUl li {
   color: #b8c7ce;
 
   font-size: 0.9rem;
+  height: 25px;
 
   &:hover {
     color: white;
   }
+}
+
+.sub{
+  background-color: #65767e;
+  padding-left: 10px;
 }

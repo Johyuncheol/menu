@@ -19,12 +19,12 @@ const Menu = () => {
       {Toggle && isOpen && (
         <>
           <li className={styles.sub}>하위 제목</li>
-          <li>하위 제목</li>
-          <li>하위 제목</li>
-          <li>하위 제목</li>
-          <li>하위 제목</li>
-          <li>하위 제목</li>
-          <li>하위 제목</li>
+          <li className={styles.sub}>하위 제목</li>
+          <li className={styles.sub}>하위 제목</li>
+          <li className={styles.sub}>하위 제목</li>
+          <li className={styles.sub}>하위 제목</li>
+          <li className={styles.sub}>하위 제목</li>
+          <li className={styles.sub}>하위 제목</li>
         </>
       )}
     </ul>
