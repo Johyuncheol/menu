@@ -12,8 +12,8 @@ const Menu = ({ data, deleteFnc, updateFnc }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [Toggle,setToggle] = useState(data.toggle);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [list, setList] = useState(Array.isArray(data.sub) ? data.sub : []);
-  console.log(data.sub)
+  const [list, setList] = useState(data.sub);
+
   const [newMenu, setNewMenu] = useState({
     // 추가할 메뉴
     id: data.id,
@@ -133,7 +133,7 @@ const Menu = ({ data, deleteFnc, updateFnc }) => {
           <button onClick={() => deleteClickHandler()}>삭제</button>
         </div>
       </div>
-      {Boolean(Toggle) && isOpen && list.length !==0 && (
+      {Boolean(Toggle) && isOpen && list && (
         <>
           {list.map((item, index) => {
             return (

@@ -39,18 +39,35 @@ router.get("/:category", async (req, res) => {
   const category = req.params.category;
   console.log(`Category: ${category}`);
   try {
-    // 테이블 이름 바인딩 안전 처리
+    // 테이블에서 모든 데이터 조회
     const [rows] = await db.query(`SELECT * FROM ??`, [category]);
-    const menuData = {
+    //mysql용 
+/*     const menuData = {
       adminMenu: rows.filter((item) => item.admin === "admin"),
       generalMenu: rows.filter((item) => item.admin === "general"),
+    }; */
+
+    //mariaDB용 
+    const menuData = {
+      adminMenu: rows
+        .filter((item) => item.admin === "admin")
+        .map((item) => ({
+          ...item,
+          sub: JSON.parse(item.sub) // sub 문자열을 배열로 변환
+        })),
+      generalMenu: rows
+        .filter((item) => item.admin === "general")
+        .map((item) => ({
+          ...item,
+          sub: JSON.parse(item.sub) // sub 문자열을 배열로 변환
+        })),
     };
 
     console.log(menuData); // 쿼리 결과 로그
     res.status(200).json(menuData);
   } catch (error) {
-    console.error("Error fetching data:", error);
-    res.status(500).json({ error: "Failed to fetch data" });
+    console.error("데이터 조회 중 오류 발생:", error);
+    res.status(500).json({ error: "데이터 조회 실패" });
   }
 });
 
