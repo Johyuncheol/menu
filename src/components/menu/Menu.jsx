@@ -133,7 +133,7 @@ const Menu = ({ data, deleteFnc, updateFnc }) => {
           <button onClick={() => deleteClickHandler()}>삭제</button>
         </div>
       </div>
-      {Boolean(Toggle) && isOpen && list && (
+      {Boolean(Toggle) && isOpen && list.length !==0 && (
         <>
           {list.map((item, index) => {
             return (
