@@ -12,8 +12,8 @@ const Menu = ({ data, deleteFnc, updateFnc }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [Toggle,setToggle] = useState(data.toggle);
   const [isUpdate, setIsUpdate] = useState(false);
-  const [list, setList] = useState(data.sub);
-
+  const [list, setList] = useState(Array.isArray(data.sub) ? data.sub : []);
+  console.log(data.sub)
   const [newMenu, setNewMenu] = useState({
     // 추가할 메뉴
     id: data.id,
