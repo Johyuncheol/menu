@@ -2,45 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db");
 
-// 테이블 존재 여부를 확인하는 함수
-const checkTableExists = async (tableName) => {
-  try {
-    const [rows] = await db.query(`
-      SELECT COUNT(*) AS count
-      FROM information_schema.tables
-      WHERE table_schema = DATABASE()
-      AND table_name = ?`, [tableName]);
-    return rows[0].count > 0;
-  } catch (error) {
-    throw new Error("테이블 존재 여부 확인 중 오류 발생: " + error.message);
-  }
-};
-
-// 테이블을 생성하는 함수
-const createTable = async (tableName) => {
-  try {
-    const createTableQuery = `
-      CREATE TABLE ?? (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        sub JSON,
-        toggle TINYINT(1) NOT NULL,
-        admin ENUM('admin', 'general') NOT NULL
-      )`;
-    await db.query(createTableQuery, [tableName]);
-  } catch (error) {
-    throw new Error("테이블 생성 중 오류 발생: " + error.message);
-  }
-};
-
-// POST 요청 핸들러
 router.post("/:category", async (req, res) => {
   const category = req.params.category;
   const addItem = req.body.newData;
 
   console.log(`Category: ${category}, AddItem: ${addItem.admin}`);
 
-  // toggle 값을 1 또는 0으로 변환
   const validToggle =
     addItem.toggle === true ||
     addItem.toggle === "true" ||
@@ -50,18 +17,9 @@ router.post("/:category", async (req, res) => {
       : 0;
 
   try {
-    // 테이블 존재 여부 확인
-    const tableExists = await checkTableExists(category);
-
-    // 테이블이 존재하지 않으면 새로 생성
-    if (!tableExists) {
-      await createTable(category);
-    }
-
-    // 테이블에 데이터 삽입
-    const query = `INSERT INTO ?? (title, sub, toggle, admin) VALUES (?, ?, ?, ?)`;
+    // 테이블 이름과 데이터 값을 안전하게 바인딩
+    const query = `INSERT INTO ${category} ( title, sub, toggle, admin) VALUES ( ?, ?, ?, ?)`;
     const [result] = await db.query(query, [
-      category,
       addItem.title,
       JSON.stringify(addItem.sub),
       validToggle,
@@ -70,19 +28,18 @@ router.post("/:category", async (req, res) => {
 
     console.log(result);
 
-    res.status(200).json({ message: "Item added successfully" });
+    res.status(200).json({ message: "Item Add successfully" });
   } catch (error) {
-    console.error("요청 처리 중 오류 발생:", error);
-    res.status(500).json({ error: "요청 처리 실패" });
+    console.error("Error deleting data:", error);
+    res.status(500).json({ error: "Failed to delete data" });
   }
 });
 
-// GET 요청 핸들러
 router.get("/:category", async (req, res) => {
   const category = req.params.category;
   console.log(`Category: ${category}`);
   try {
-    // 테이블에서 모든 데이터 조회
+    // 테이블 이름 바인딩 안전 처리
     const [rows] = await db.query(`SELECT * FROM ??`, [category]);
     const menuData = {
       adminMenu: rows.filter((item) => item.admin === "admin"),
@@ -92,12 +49,11 @@ router.get("/:category", async (req, res) => {
     console.log(menuData); // 쿼리 결과 로그
     res.status(200).json(menuData);
   } catch (error) {
-    console.error("데이터 조회 중 오류 발생:", error);
-    res.status(500).json({ error: "데이터 조회 실패" });
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Failed to fetch data" });
   }
 });
 
-// DELETE 요청 핸들러
 router.delete("/:category", async (req, res) => {
   const category = req.params.category;
   const deleteItemID = req.body.id;
@@ -105,7 +61,7 @@ router.delete("/:category", async (req, res) => {
   console.log(`Category: ${category}, DeleteItemID: ${deleteItemID}`);
 
   try {
-    // 데이터 삭제 쿼리 실행
+    // 테이블 이름과 데이터 값을 안전하게 바인딩
     const [result] = await db.query("DELETE FROM ?? WHERE id = ?", [
       category,
       deleteItemID,
@@ -114,12 +70,32 @@ router.delete("/:category", async (req, res) => {
 
     res.status(200).json({ message: "Item deleted successfully" });
   } catch (error) {
-    console.error("데이터 삭제 중 오류 발생:", error);
-    res.status(500).json({ error: "데이터 삭제 실패" });
+    console.error("Error deleting data:", error);
+    res.status(500).json({ error: "Failed to delete data" });
   }
 });
 
-// PUT 요청 핸들러 - 업데이트
+router.delete("/:category", async (req, res) => {
+  const category = req.params.category;
+  const deleteItemID = req.body.id;
+
+  console.log(`Category: ${category}, DeleteItemID: ${deleteItemID}`);
+
+  try {
+    // 테이블 이름과 데이터 값을 안전하게 바인딩
+    const [result] = await db.query("DELETE FROM ?? WHERE id = ?", [
+      category,
+      deleteItemID,
+    ]);
+    console.log(result);
+
+    res.status(200).json({ message: "Item deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    res.status(500).json({ error: "Failed to delete data" });
+  }
+});
+
 router.put("/:category", async (req, res) => {
   const category = req.params.category;
   const { id, title, sub, toggle, admin } = req.body.newData;
@@ -149,12 +125,12 @@ router.put("/:category", async (req, res) => {
 
     res.status(200).json({ message: "Item updated successfully" });
   } catch (error) {
-    console.error("항목 업데이트 중 오류 발생:", error);
-    res.status(500).json({ error: "항목 업데이트 실패" });
+    console.error("Error updating item:", error);
+    res.status(500).json({ error: "Failed to update item" });
   }
 });
 
-// PUT 요청 핸들러 - 메뉴 순서 변경
+// 메뉴 순서 변경
 router.put("/:category/reorder", async (req, res) => {
   const category = req.params.category;
   const { updatedData } = req.body;
@@ -162,13 +138,12 @@ router.put("/:category/reorder", async (req, res) => {
   console.log("Updated Data:", updatedData);
 
   try {
-    // 현재 테이블의 모든 데이터 삭제
     const [result] = await db.query(`DELETE FROM ${category}`);
 
-    // 새로운 데이터 삽입
     for (const item of updatedData) {
       console.log(item);
-      const query = `INSERT INTO ${category} (title, sub, toggle, admin) VALUES (?, ?, ?, ?)`;
+      // 테이블의 각 항목을 ID를 기준으로 업데이트
+      const query = `INSERT INTO ${category} ( title, sub, toggle, admin) VALUES ( ?, ?, ?, ?)`;
       const [result] = await db.query(query, [
         item.title,
         JSON.stringify(item.sub),
@@ -179,8 +154,8 @@ router.put("/:category/reorder", async (req, res) => {
 
     res.status(200).json({ message: "Menu reordered successfully" });
   } catch (error) {
-    console.error("메뉴 순서 변경 중 오류 발생:", error);
-    res.status(500).json({ error: "메뉴 순서 변경 실패" });
+    console.error("Error reordering menu:", error);
+    res.status(500).json({ error: "Failed to reorder menu" });
   }
 });
 
