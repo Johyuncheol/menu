@@ -1,0 +1,37 @@
+.aside {
+  width: 230px;
+  align-items: center;
+  justify-content: center;
+  background-color: #222d32;
+  min-height: calc(100vh - 50px);
+
+}
+
+.menuLable {
+  color: #4b646f;
+  background-color: #1a2226;
+  font-size: 0.75rem;
+  padding-left: 3px;
+  height: 36px;
+  padding: 0 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.droppable {
+  width: 100%;
+  padding: 10px;
+  background-color: #e0e0e0;
+  border: 1px dashed #ccc;
+  margin-bottom: 20px;
+}
+
+.draggable {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+}

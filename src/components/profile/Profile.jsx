@@ -8,7 +8,7 @@ const Profile = () => {
 
       <div className={styles.userInfo}>
         <span>이름 직무</span>
-        <span>로그인 중입니다</span>
+        <span>로그인 중입니다.</span>
       </div>
     </section>
   );

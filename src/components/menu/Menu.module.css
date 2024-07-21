@@ -1,26 +1,72 @@
-.EndEnd {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-
 .MenuUl {
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
-.MenuUl li {
+.MainLi {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
   color: #b8c7ce;
 
   font-size: 0.9rem;
+  font-weight: 600;
   height: 25px;
+  padding: 10px 15px;
 
   &:hover {
     color: white;
   }
 }
 
-.sub{
-  background-color: #65767e;
-  padding-left: 10px;
+.sub {
+  font-size: 0.7rem;
+  height: 19px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: #b8c7ce;
+  background-color: #2C3B41;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  height: 13px;
+  padding: 10px 15px;
+
+  &:hover {
+    color: white;
+  }
+}
+
+.icon_open {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  transform: rotate(0deg);
+}
+
+.icon_close {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  transform: rotate(-90deg);
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.options {
+  position: absolute;
+  left: 230px;
+  height: 25px;
+  padding: 10px 0px 10px 50px;
+  display: flex;
+  gap:40px;
+  border-bottom: 1px solid black;
 }

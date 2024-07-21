@@ -1,0 +1,16 @@
+.addForm {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 30%;
+  left: max(30%,500px);
+  gap: 10px;
+  font-size: 1rem;
+
+  background-color: antiquewhite;
+  padding:40px;
+
+  input {
+    font-size: 1rem;
+  }
+}

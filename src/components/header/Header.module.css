@@ -2,14 +2,27 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 45px;
+  height: 50px;
   background-color: #3c8dbc;
 }
+
 .title {
-  width: 170px;
-    text-align: center;
-    font-weight: 800;
-    font-size: 1.1rem;
-    color: aliceblue;
+  width: 230px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: aliceblue;
 }
 
+.nav {
+  ul {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  ul>li>button {
+    cursor: pointer;
+
+  }
+}
