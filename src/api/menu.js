@@ -1,6 +1,6 @@
 export const fetchMenuAPI = async (path) => {
   try {
-    const response = await fetch(`http://localhost:8080/menu${path}`);
+    const response = await fetch(`${process.env.BASEURL}/menu${path}`);
     if (!response.ok) {
       throw new Error("network error");
     }
@@ -14,7 +14,7 @@ export const fetchMenuAPI = async (path) => {
 
 export const deleteMenuAPI = async (path, id) => {
   try {
-    const response = await fetch(`http://localhost:8080/menu${path}`, {
+    const response = await fetch(`${process.env.BASEURL}/menu${path}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export const deleteMenuAPI = async (path, id) => {
 
 export const addMenuAPI = async (path, newData) => {
   try {
-    const response = await fetch(`http://localhost:8080/menu${path}`, {
+    const response = await fetch(`${process.env.BASEURL}/menu${path}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const addMenuAPI = async (path, newData) => {
 export const updateMenuAPI = async (path, newData) => {
   try {
     console.log(newData)
-    const response = await fetch(`http://localhost:8080/menu${path}`, {
+    const response = await fetch(`${process.env.BASEURL}/menu${path}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export const updateMenuAPI = async (path, newData) => {
 export const drageMenuAPI = async (path, updatedData) => {
   try {
     console.log(path,updatedData)
-    const response = await fetch(`http://localhost:8080/menu${path}/reorder`, {
+    const response = await fetch(`${process.env.BASEURL}/menu${path}/reorder`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
