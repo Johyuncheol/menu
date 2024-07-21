@@ -6,6 +6,7 @@ import {
   deleteMenuAPI,
   updateMenuAPI,
   drageMenuAPI,
+  updateSubMenuAPI,
 } from "../../api/menu";
 
 const Aside = ({ data, path, fetchData }) => {
@@ -27,6 +28,12 @@ const Aside = ({ data, path, fetchData }) => {
   // 드래그 순서변경 함수
   const reorderMenu = async (path, updatedData) => {
     await drageMenuAPI(path, updatedData);
+    fetchData();
+  };
+
+  // 드래그 서브메뉴 순서변경 함수
+  const reorderSubMenu = async (path, updatedData,id) => {
+    await updateSubMenuAPI(path, updatedData,id);
     fetchData();
   };
 
@@ -114,7 +121,12 @@ const Aside = ({ data, path, fetchData }) => {
             onDragEnd={() => drop()}
             onDragOver={(e) => e.preventDefault()}
           >
-            <Menu data={item} deleteFnc={deleteData} updateFnc={updateData} />
+            <Menu
+              data={item}
+              deleteFnc={deleteData}
+              updateFnc={updateData}
+              reorderSubMenu={reorderSubMenu}
+            />
           </div>
         ))}
 

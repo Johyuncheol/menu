@@ -6,14 +6,14 @@ import { deleteMenu } from "../../redux/reducers/menu";
 import { updateMenu } from "../../redux/reducers/menu";
 import { useLocation } from "react-router-dom";
 
-const Menu = ({ data, deleteFnc, updateFnc }) => {
+const Menu = ({ data, deleteFnc, updateFnc, reorderSubMenu }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [Toggle,setToggle] = useState(data.toggle);
+  const [Toggle, setToggle] = useState(data.toggle);
   const [isUpdate, setIsUpdate] = useState(false);
   const [list, setList] = useState(data.sub);
-
+  console.log(data.id,data.title);
   const [newMenu, setNewMenu] = useState({
     // 추가할 메뉴
     id: data.id,
@@ -33,7 +33,7 @@ const Menu = ({ data, deleteFnc, updateFnc }) => {
       toggle: data.toggle,
       admin: data.admin,
     });
-    setToggle(data.toggle)
+    setToggle(data.toggle);
   }, [data, location]);
 
   const ClickToggleHandler = () => {
@@ -56,27 +56,32 @@ const Menu = ({ data, deleteFnc, updateFnc }) => {
   };
 
   // 드랍 (커서 뗐을 때)
-  const drop = (e) => {
+  const drop = async (e) => {
+    e.preventDefault();
+
     const newList = [...list];
     const dragItemValue = newList[dragItem.current];
     newList.splice(dragItem.current, 1);
     newList.splice(dragOverItem.current, 0, dragItemValue);
+
     dragItem.current = null;
     dragOverItem.current = null;
     setList(newList);
+
+    await reorderSubMenu(location.pathname, newList, data.id);
   };
 
   // 삭제 동작 함수
-  const deleteClickHandler = () => {
+  const deleteClickHandler = async () => {
     dispatch(
       deleteMenu(data.admin === "admin" ? "adminMenu" : "generalMenu", data.id)
     );
 
-    deleteFnc(location.pathname, data.id);
+    await deleteFnc(location.pathname, data.id);
   };
 
   // 수정 동작 함수
-  const updateClickHandler = (id) => {
+  const updateClickHandler = async (id) => {
     if (isUpdate) {
       dispatch(
         updateMenu(
@@ -86,7 +91,7 @@ const Menu = ({ data, deleteFnc, updateFnc }) => {
         )
       );
 
-      updateFnc(location.pathname, newMenu);
+      await updateFnc(location.pathname, newMenu);
     }
 
     setIsUpdate(!isUpdate);

@@ -26,8 +26,6 @@ router.post("/:category", async (req, res) => {
       addItem.admin,
     ]);
 
-    console.log(result);
-
     res.status(200).json({ message: "Item Add successfully" });
   } catch (error) {
     console.error("Error deleting data:", error);
@@ -41,14 +39,14 @@ router.get("/:category", async (req, res) => {
   try {
     // 테이블에서 모든 데이터 조회
     const [rows] = await db.query(`SELECT * FROM ??`, [category]);
-    //mysql용 
+    //mysql용
 /*     const menuData = {
       adminMenu: rows.filter((item) => item.admin === "admin"),
       generalMenu: rows.filter((item) => item.admin === "general"),
     }; */
 
-    //mariaDB용 
-    const menuData = {
+    //mariaDB용
+        const menuData = {
       adminMenu: rows
         .filter((item) => item.admin === "admin")
         .map((item) => ({
@@ -63,7 +61,7 @@ router.get("/:category", async (req, res) => {
         })),
     };
 
-    console.log(menuData); // 쿼리 결과 로그
+    /*  console.log(menuData); // 쿼리 결과 로그 */
     res.status(200).json(menuData);
   } catch (error) {
     console.error("데이터 조회 중 오류 발생:", error);
@@ -83,7 +81,6 @@ router.delete("/:category", async (req, res) => {
       category,
       deleteItemID,
     ]);
-    console.log(result);
 
     res.status(200).json({ message: "Item deleted successfully" });
   } catch (error) {
@@ -104,7 +101,6 @@ router.delete("/:category", async (req, res) => {
       category,
       deleteItemID,
     ]);
-    console.log(result);
 
     res.status(200).json({ message: "Item deleted successfully" });
   } catch (error) {
@@ -152,13 +148,10 @@ router.put("/:category/reorder", async (req, res) => {
   const category = req.params.category;
   const { updatedData } = req.body;
 
-  console.log("Updated Data:", updatedData);
-
   try {
     const [result] = await db.query(`DELETE FROM ${category}`);
 
     for (const item of updatedData) {
-      console.log(item);
       // 테이블의 각 항목을 ID를 기준으로 업데이트
       const query = `INSERT INTO ${category} ( title, sub, toggle, admin) VALUES ( ?, ?, ?, ?)`;
       const [result] = await db.query(query, [
@@ -173,6 +166,37 @@ router.put("/:category/reorder", async (req, res) => {
   } catch (error) {
     console.error("Error reordering menu:", error);
     res.status(500).json({ error: "Failed to reorder menu" });
+  }
+});
+
+router.patch("/:category/sub", async (req, res) => {
+  const category = req.params.category;
+
+  const { id, sub } = req.body.newData;
+
+  console.log(
+    `Updating data for category: ${category}, id: ${id}, sub: ${sub}`
+  );
+
+  console.log(sub);
+  try {
+    // JSON 문자열로 변환
+
+    // 쿼리문 작성
+    /*     const query = `UPDATE ${category} SET sub = ? WHERE id = ?`;
+    const [result] = await db.query(query, [newSubValue, id]); */
+
+    
+    // SQL 쿼리 작성
+    const query = `UPDATE \`${category}\` SET sub = ? WHERE id = ?`;
+    const [result] = await db.query(query, [JSON.stringify(sub), id]);
+
+ 
+
+    res.status(200).json({ message: "Menu updated successfully" });
+  } catch (error) {
+    console.error("Error updating sub menu:", error);
+    res.status(500).json({ error: "Failed to update sub menu" });
   }
 });
 
